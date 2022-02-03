@@ -2,11 +2,12 @@
 
 set -e
 
-OMADA_DIR="/data/omada_controller"
+OMADA_DIR="/opt/tplink/EAPController"
 ARCH="${ARCH:-}"
 OMADA_VER="${OMADA_VER:-}"
 OMADA_TAR="${OMADA_TAR:-}"
 OMADA_URL="${OMADA_URL:-}"
+OMADA_MAJOR_VER="$(echo "${OMADA_VER}" | awk -F '.' '{print $1}')"
 
 die() { echo -e "$@" 2>&1; exit 1; }
 
@@ -46,18 +47,44 @@ cd /tmp
 wget -nv "${OMADA_URL}"
 
 echo "**** Extract and Install Omada Controller ****"
-tar zxvf "${OMADA_TAR}"
-rm -f "${OMADA_TAR}"
-cd Omada_SDN_Controller_*
+
+# in the 4.4.3, 4.4.6, and 4.4.8 builds, they removed the directory. this case statement will handle variations in the build
+case "${OMADA_VER}" in
+  4.4.3|4.4.6|4.4.8)
+    echo "version ${OMADA_VER}"
+    mkdir "Omada_SDN_Controller_${OMADA_VER}"
+    cd "Omada_SDN_Controller_${OMADA_VER}"
+    tar zxvf "../${OMADA_TAR}"
+    rm -f "../${OMADA_TAR}"
+    ;;
+  *)
+    echo "not version 4.4.3/4.4.6/4.4.8"
+    tar zxvf "${OMADA_TAR}"
+    rm -f "${OMADA_TAR}"
+    cd Omada_SDN_Controller_*
+    ;;
+esac
+
+# make sure tha the install directory exists
 mkdir "${OMADA_DIR}" -vp
-cp bin "${OMADA_DIR}" -r
-cp data "${OMADA_DIR}" -r
-cp properties "${OMADA_DIR}" -r
-cp webapps "${OMADA_DIR}" -r
-cp keystore "${OMADA_DIR}" -r
-cp lib "${OMADA_DIR}" -r
-cp install.sh "${OMADA_DIR}" -r
-cp uninstall.sh "${OMADA_DIR}" -r
+
+# starting with 5.0.x, the installation has no webapps directory; these values are pulled from the install.sh
+case "${OMADA_MAJOR_VER}" in
+  5)
+    NAMES=( bin data properties keystore lib install.sh uninstall.sh )
+    ;;
+  *)
+    NAMES=( bin data properties keystore lib webapps install.sh uninstall.sh )
+    ;;
+esac
+
+# copy over the files to the destination
+for NAME in "${NAMES[@]}"
+do
+  cp "${NAME}" "${OMADA_DIR}" -r
+done
+
+# symlink for mongod
 ln -sf "$(which mongod)" "${OMADA_DIR}/bin/mongod"
 chmod 755 "${OMADA_DIR}"/bin/*
 
