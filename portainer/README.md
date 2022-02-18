@@ -17,10 +17,6 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-[![Sponsor Frenck via GitHub Sponsors][github-sponsors-shield]][github-sponsors]
-
-[![Support Frenck on Patreon][patreon-shield]][patreon]
-
 Manage your Docker environment with ease.
 
 ![The Portainer Hass.io add-on](images/screenshot.png)
@@ -35,18 +31,6 @@ overview of Docker and allows you to manage containers, images, networks and
 volumes.
 
 [:books: Read the full add-on documentation][docs]
-
-
-## DISCONTINUED
-
-This add-on is no longer available.
-
-It has been used quite a lot for unsupported porposes, causing many issues,
-support questions and other problems.
-
-If you run Home Assistant, please be aware that running additional containers
-is not a supported use-case and will trigger your system to be flagged
-as unsupported as well.
 
 ## WARNING 1
 
@@ -64,19 +48,6 @@ or third-party containers.
 **Home Assistant DOES NOT SUPPORT running third party containers**
 on Home Assistant OS or Supervised installation types. Ignoring this, will
 render your system as unsupported!
-
-## Support
-
-Got questions?
-
-You have several options to get them answered:
-
-- The [Home Assistant Community Add-ons Discord chat server][discord] for add-on
-  support and feature requests.
-- The [Home Assistant Discord chat server][discord-ha] for general Home
-  Assistant discussions and questions.
-- The Home Assistant [Community Forum][forum].
-- Join the [Reddit subreddit][reddit] in [/r/homeassistant][reddit]
 
 You could also [open an issue here][issue] GitHub.
 
@@ -141,7 +112,6 @@ SOFTWARE.
 [docs]: https://github.com/hassio-addons/addon-portainer/blob/main/portainer/DOCS.md
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg
 [forum]: https://community.home-assistant.io/t/home-assistant-community-add-on-portainer/68836?u=frenck
-[frenck]: https://github.com/frenck
 [github-actions-shield]: https://github.com/hassio-addons/addon-portainer/workflows/CI/badge.svg
 [github-actions]: https://github.com/hassio-addons/addon-portainer/actions
 [github-sponsors-shield]: https://frenck.dev/wp-content/uploads/2019/12/github_sponsor.png
@@ -150,8 +120,6 @@ SOFTWARE.
 [issue]: https://github.com/hassio-addons/addon-portainer/issues
 [license-shield]: https://img.shields.io/github/license/hassio-addons/addon-portainer.svg
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2021.svg
-[patreon-shield]: https://frenck.dev/wp-content/uploads/2019/12/patreon.png
-[patreon]: https://www.patreon.com/frenck
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-%20!%20DEPRECATED%20%20%20!-ff0000.svg
 [reddit]: https://reddit.com/r/homeassistant
 [releases-shield]: https://img.shields.io/github/release/hassio-addons/addon-portainer.svg
