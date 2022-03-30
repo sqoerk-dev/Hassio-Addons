@@ -18,6 +18,7 @@ PKGS=(
   openjdk-8-jre-headless
   tzdata
   wget
+  curl
 )
 
 case "${ARCH}" in
