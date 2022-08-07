@@ -75,10 +75,10 @@ mkdir "${OMADA_DIR}/work"
 # starting with 5.0.x, the installation has no webapps directory; these values are pulled from the install.sh
 case "${OMADA_MAJOR_VER}" in
   5)
-    NAMES=( bin data properties keystore lib install.sh uninstall.sh )
+    NAMES=( bin properties keystore lib install.sh uninstall.sh )
     ;;
   *)
-    NAMES=( bin data properties keystore lib webapps install.sh uninstall.sh )
+    NAMES=( bin properties keystore lib webapps install.sh uninstall.sh )
     ;;
 esac
 
