@@ -15,10 +15,9 @@ die() { echo -e "$@" 2>&1; exit 1; }
 PKGS=(
   gosu
   net-tools
-  openjdk-11-jre-headless
+  openjdk-8-jre-headless
   tzdata
   wget
-  curl
 )
 
 case "${ARCH}" in
@@ -66,8 +65,12 @@ case "${OMADA_VER}" in
     ;;
 esac
 
+mkdir -p /data/db
+
 # make sure tha the install directory exists
 mkdir "${OMADA_DIR}" -vp
+mkdir "${OMADA_DIR}/logs"
+mkdir "${OMADA_DIR}/work"
 
 # starting with 5.0.x, the installation has no webapps directory; these values are pulled from the install.sh
 case "${OMADA_MAJOR_VER}" in
@@ -85,6 +88,9 @@ do
   cp "${NAME}" "${OMADA_DIR}" -r
 done
 
+# symlink to home assistant data dir
+ln -s /data "${OMADA_DIR}"
+
 # symlink for mongod
 ln -sf "$(which mongod)" "${OMADA_DIR}/bin/mongod"
 chmod 755 "${OMADA_DIR}"/bin/*
@@ -92,7 +98,6 @@ chmod 755 "${OMADA_DIR}"/bin/*
 echo "**** Setup omada User Account ****"
 groupadd -g 508 omada
 useradd -u 508 -g 508 -d "${OMADA_DIR}" omada
-mkdir "${OMADA_DIR}/logs" "${OMADA_DIR}/work"
 chown -R omada:omada "${OMADA_DIR}/data" "${OMADA_DIR}/logs" "${OMADA_DIR}/work"
 
 echo "**** Cleanup ****"
