@@ -1,18 +1,23 @@
-ARG BASE=mbentley/omada-controller:latest
+ARG BASE=mbentley/ubuntu:18.04
 FROM ${BASE}
-HEALTHCHECK CMD wget --quiet --tries=1 --no-check-certificate http://127.0.0.1:8088 || exit 1
 
-COPY install.sh healthcheck.sh entrypoint.sh /
+LABEL maintainer="Matt Bentley <mbentley@mbentley.net>"
 
-RUN chmod +x /*.sh
+ARG OMADA_VER=5.0.30
+ARG OMADA_TAR="Omada_SDN_Controller_v${OMADA_VER}_linux_x64.tar.gz"
+ARG OMADA_URL="https://static.tp-link.com/upload/software/2022/202201/20220120/${OMADA_TAR}"
+# valid values: amd64 (default) | arm64 | armv7l
+ARG ARCH=arm64
 
-# Copy configuration properties
-COPY omada.properties /opt/tplink/EAPController/properties/
-# log4j2.properties
+COPY install.sh healthcheck.sh /
 
-EXPOSE 8043/tcp 8088/tcp 27001/udp 27002/tcp 29810/tcp 29810/udp 29811/tcp 29811/udp 29812/tcp 29812/udp 29813/tcp 29813/udp 29814/tcp 29814/udp
+# install omada controller (instructions taken from install.sh); then create a user & group and set the appropriate file system permissions
+RUN /install.sh && rm /install.sh
 
+COPY entrypoint-5.x.sh /entrypoint.sh
+
+WORKDIR /opt/tplink/EAPController/lib
+EXPOSE 8088 8043 8843 27001/udp 27002 29810/udp 29811 29812 29813 29814
+HEALTHCHECK --start-period=5m CMD /healthcheck.sh
 ENTRYPOINT ["/entrypoint.sh"]
-# CMD ["/usr/bin/java","-server","-Xms128m","-Xmx1024m","-XX:MaxHeapFreeRatio=60","-XX:MinHeapFreeRatio=30","-XX:+HeapDumpOnOutOfMemoryError","-cp","/opt/tplink/EAPController/lib/*:","com.tplink.omada.start.OmadaLinuxMain"]
-# CMD ["/usr/bin/java","-server","-Xms128m","-Xmx1024m","-XX:MaxHeapFreeRatio=60","-XX:MinHeapFreeRatio=30","-XX:+HeapDumpOnOutOfMemoryError","-XX:HeapDumpPath=/opt/tplink/EAPController/logs/java_heapdump.hprof","-Djava.awt.headless=true","-cp","/opt/tplink/EAPController/lib/*::/opt/tplink/EAPController/properties:","com.tplink.smb.omada.starter.OmadaLinuxMain"]
-CMD ["/usr/bin/java","-server","-Xms128m","-Xmx1024m","-XX:MaxHeapFreeRatio=60","-XX:MinHeapFreeRatio=30","-XX:+HeapDumpOnOutOfMemoryError","-Djava.awt.headless=true","-cp","/opt/tplink/EAPController/lib/*::/opt/tplink/EAPController/properties:","com.tplink.smb.omada.starter.OmadaLinuxMain"]
+CMD ["/usr/bin/java","-server","-Xms128m","-Xmx1024m","-XX:MaxHeapFreeRatio=60","-XX:MinHeapFreeRatio=30","-XX:+HeapDumpOnOutOfMemoryError","-XX:HeapDumpPath=/opt/tplink/EAPController/logs/java_heapdump.hprof","-Djava.awt.headless=true","-cp","/opt/tplink/EAPController/lib/*::/opt/tplink/EAPController/properties:","com.tplink.smb.omada.starter.OmadaLinuxMain"]
