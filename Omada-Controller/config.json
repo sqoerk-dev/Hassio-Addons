@@ -1,14 +1,14 @@
 {
     "name": "Omada Controller beta",
-    "version": "0.2.3b16",
+    "version": "0.2.3b17",
     "slug": "omada_controller_beta",
-    "description": "TP-Link Omada Controller software for managing WAPs",
+    "description": "TP-Link Omada Controller software for managing WAPs v5 Beta",
     "url": "https://github.com/sqoerk-dev/Hassio-Addons",
     "ingress": true,
     "ingress_entry": "/login",
     "ingress_port": 8043,
-    "startup": "services",
-    "arch": ["aarch64", "amd64", "armv7", "i386"],
+    "startup": "application",
+    "arch": ["aarch64"],
     "init": false,
     "apparmor": false,
     "hassio_api": true,
@@ -25,7 +25,9 @@
         "29812/tcp": 39812,
         "29812/udp": 39812,
         "29813/tcp": 39813,
-        "29813/udp": 39813  
+        "29813/udp": 39813,
+        "29814/tcp": 39814,
+        "29814/udp": 39814 
     },
     "ports_description": {
         "8088/tcp": "Used for Omada Controller interface and API",
@@ -40,7 +42,9 @@
         "29812/tcp": "Used for device discovery",
         "29812/udp": "Used for device discovery",
         "29813/tcp": "Used for device discovery",
-        "29813/udp": "Used for device discovery"
+        "29813/udp": "Used for device discovery",
+        "29814/tcp": "Used for device discovery",
+        "29814/udp": "Used for device discovery"
       },
     "map": ["backup:rw", "ssl"],
     "services": [],
